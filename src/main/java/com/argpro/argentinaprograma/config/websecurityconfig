@@ -1,0 +1,64 @@
+
+ @Override
+ protected void configure(HttpSecurity http) throws Exception {
+
+ http.csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers(
+                    HttpMethod.DELETE,
+                        "/api/seccion/*/**",
+                        "/api/seccion/navbar/delete/**",
+                        "/api/seccion/sobremi/delete/**",
+                        "/api/seccion/experiencia/borrarcardporid/**"
+
+                ).permitAll()
+                .antMatchers(
+                        HttpMethod.GET,
+                        "/api/**",
+                        "/api/gestionusuario/usuario/**",
+                        "/api/seccion/navbar/delete/**"
+                        ,"/api/seccion/*/**",
+                        "/**/*"
+
+                ).permitAll()
+                .antMatchers(
+                        HttpMethod.POST,
+                        "/api",
+                        "/api/auth/**",
+                        "/api/auth/codigoadmin",
+                        "/api/image/**",
+                        "/api/gestionusuario/usuario/**",
+                        "/api/seccion/navbar/delete/**",
+                        "/api/seccion/*/**",
+                        "/**/*.png",
+                        "/**/*.gif",
+                        "/**/*.svg",
+                        "/**/*.jpg",
+                        "/**/*.html",
+                        "/**/*.css"
+
+                ).permitAll()
+                .anyRequest()
+                .authenticated();
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.cors();
+        http.build();
+
+        }
+
+
+        // estaba comentado ...
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/api/**")
+                        //.allowedOrigins("http://localhost:4200", "https://localhost:4200", "http://localhost:8080", "https://localhost:8080")
+                        .allowedOrigins("*")
+                        .allowedHeaders("authorization", "contentType", "Origin", "Content-Type", "X-Auth-Token")
+                        .exposedHeaders("Authorization")
+                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS");
+            }
