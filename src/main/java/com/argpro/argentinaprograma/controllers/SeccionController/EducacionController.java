@@ -161,8 +161,6 @@ public class EducacionController extends BaseControllerImplem<EducacionModel, Ed
 
             ) throws IOException { //@RequestBody EducacioncardDto educacioncardDto    @RequestBody Map<String, String> nuevaeducacioncard
 
-
-
         /*
 
          */
@@ -477,7 +475,14 @@ public class EducacionController extends BaseControllerImplem<EducacionModel, Ed
         }
     }
 
-    //FECHAS CARD
+    //borrar cursos card
+    @DeleteMapping("/deletecards/{id}")
+    public boolean deletecards(@PathVariable Integer id){
+
+        iEducacioncardRepository.deleteById(id.longValue());
+
+        return iEducacioncardRepository.existsById(Long.valueOf(id));
+    }
 
 
 
